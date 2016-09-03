@@ -1,53 +1,73 @@
-describe('Add movie', function(){
-	var controller, scope;
+describe('Add movie', function () {
+    var controller, scope;
 
-	var FirebaseServiceMock;
+    var FirebaseServiceMock;
 
-  	beforeEach(function(){
-  		// Lisää moduulisi nimi tähän
-    	module('MyAwesomeModule');
+    beforeEach(function () {
+        // Lisää moduulisi nimi tähän
+        module('MovieApp');
+        FirebaseServiceMock = (function () {
+            var movies = [];
+            return {
+                // Toteuta FirebaseServicen mockatut metodit tähän
+                addMovie: function (movie) {
+                    movies.push(movie);
+                },
+                getMovies: function () {
+                    return movies;
+                }
 
-    	FirebaseServiceMock = (function(){
-			return {
-				// Toteuta FirebaseServicen mockatut metodit tähän
-			}
-		})();
+            }
+        })();
 
-		// Lisää vakoilijat
-	    // spyOn(FirebaseServiceMock, 'jokuFunktio').and.callThrough();
+        // Lisää vakoilijat
+        // spyOn(FirebaseServiceMock, 'jokuFunktio').and.callThrough();
+        spyOn(FirebaseServiceMock, 'addMovie').and.callThrough();
+        // Injektoi toteuttamasi kontrolleri tähän
+        inject(function ($controller, $rootScope) {
+            scope = $rootScope.$new();
+            // Muista vaihtaa oikea kontrollerin nimi!
+            controller = $controller('AddController', {
+                $scope: scope,
+                FirebaseService: FirebaseServiceMock
+            });
+        });
+    });
 
-    	// Injektoi toteuttamasi kontrolleri tähän
-	    inject(function($controller, $rootScope) {
-	      scope = $rootScope.$new();
-	      // Muista vaihtaa oikea kontrollerin nimi!
-	      controller = $controller('MyAwesomeController', {
-	        $scope: scope,
-	        FirebaseService: FirebaseServiceMock
-	      });
-	    });
-  	});
+    /*
+     * Testaa alla esitettyjä toimintoja kontrollerissasi
+     */
 
-  	/*
-  	* Testaa alla esitettyjä toimintoja kontrollerissasi
-  	*/
+    /*
+     * Testaa, että käyttäjä pystyy lisäämään elokuvan oikeilla tiedoilla.
+     * Muista myös tarkistaa, että Firebasen kanssa keskustelevasta palvelusta
+     * on kutsutta oikeaa funktiota lisäämällä siihen vakoilijan ja käyttämällä
+     * toBeCalled-oletusta.
+     */
+    it('should be able to add a movie by its name, director, release date and description', function () {
+        scope.movieName = 'Testi1';
+        scope.movieYear = '2022';
+        scope.movieDirector = 'Testaaja';
+        scope.movieDescription = 'Testi';
+        scope.addMovie();
 
-  	/*
-  	* Testaa, että käyttäjä pystyy lisäämään elokuvan oikeilla tiedoilla.
-  	* Muista myös tarkistaa, että Firebasen kanssa keskustelevasta palvelusta
-  	* on kutsutta oikeaa funktiota lisäämällä siihen vakoilijan ja käyttämällä
-  	* toBeCalled-oletusta.
-	*/
-	it('should be able to add a movie by its name, director, release date and description', function(){
-		expect(true).toBe(false);
-	});
+        expect(scope.movies.length).toBe(1);
+        expect(FirebaseServiceMock.addMovie).toHaveBeenCalled();
+    });
 
-	/*	
-	* Testaa, ettei käyttäjä pysty lisäämään elokuvaa väärillä tiedoilla.
-	* Muista myös tarkistaa, että Firebasen kanssa keskustelevasta palvelusta
-	* EI kutsuta funktiota, joka hoitaa muokkauksen. Voit käyttää siihen
-	* not.toBeCalled-oletusta (muista not-negaatio!).
-	*/
-	it('should not be able to add a movie if its name, director, release date or description is empty', function(){
-		expect(true).toBe(false);
-	});
+    /*	
+     * Testaa, ettei käyttäjä pysty lisäämään elokuvaa väärillä tiedoilla.
+     * Muista myös tarkistaa, että Firebasen kanssa keskustelevasta palvelusta
+     * EI kutsuta funktiota, joka hoitaa muokkauksen. Voit käyttää siihen
+     * not.toBeCalled-oletusta (muista not-negaatio!).
+     */
+    it('should not be able to add a movie if its name, director, release date or description is empty', function () {
+        scope.addMovie({
+            name: 'asd',
+            year: '1234',
+            director: 'asd',
+        });
+        expect(scope.movies.length).toBe(0);
+        expect(FirebaseServiceMock.addMovie).not.toHaveBeenCalled();
+    });
 });
