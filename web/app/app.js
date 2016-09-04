@@ -45,19 +45,19 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
                 $scope.movies = FirebaseService.getMovies();
 
                 $scope.addMovie = function () {
-                    if ($scope.movieName == null || $scope.movieYear == null || $scope.movieDirector == null || $scope.movieDescription == null) {
+                    if ($scope.name == '' || $scope.year == null || $scope.director == '' || $scope.description == '') {
                         alert('Täytä kaikki tiedot!');
                     } else {
                         FirebaseService.addMovie({
-                            name: $scope.movieName,
-                            year: $scope.movieYear,
-                            director: $scope.movieDirector,
-                            description: $scope.movieDescription
+                            name: $scope.name,
+                            year: $scope.year,
+                            director: $scope.director,
+                            description: $scope.description
                         });
-                        $scope.movieName = '';
-                        $scope.movieYear = '';
-                        $scope.movieDirector = '';
-                        $scope.movieDescription = '';
+                        $scope.name = '';
+                        $scope.year = '';
+                        $scope.director = '';
+                        $scope.description = '';
                         $location.path('/')
                     }
                 };
@@ -71,26 +71,26 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
         })
 
         .controller('editMovieController', function ($scope, FirebaseService, $routeParams, $location) {
-            $scope.movies = FirebaseService.getMovies();
-            FirebaseService.getMovie($routeParams.key, function (data) {
-                $scope.movie = data;
-                $scope.movieName = $scope.movie.name;
-                $scope.movieDirector = $scope.movie.director;
-                $scope.movieYear = $scope.movie.year;
-                $scope.movieDescription = $scope.movie.description;
+
+            FirebaseService.getMovie($routeParams.key, function (movie) {
+                $scope.movie = movie;
+                
+                //Lisää sisällön inputteihin 
+                $scope.name = movie.name;
+                $scope.year = movie.year;
+                $scope.director = movie.director;
+                $scope.description = movie.description;
             });
 
-            $scope.editMovie = function (movie) {
-                if ($scope.movieName == null || $scope.movieYear == null || $scope.movieDirector == null || $scope.movieDescription == null) {
-                    alert('Täytä kaikki tiedot!');
-                } else {
-                    movie.name = $scope.movieName;
-                    movie.year = $scope.movieYear;
-                    movie.director = $scope.movieDirector;
-                    movie.description = $scope.movieDescription;
-                    FirebaseService.editMovie(movie);
+            $scope.editMovie = function () {
+                if ($scope.name.length !== 0 && $scope.year !== null && $scope.director.length !== 0 && $scope.description.length !== 0) {
+                    $scope.movie.name = $scope.name;
+                    $scope.movie.year = $scope.year;
+                    $scope.movie.director = $scope.director;
+                    $scope.movie.description = $scope.description;
+
+                    FirebaseService.editMovie($scope.movie);
                     $location.path('/');
                 }
-
             };
         });

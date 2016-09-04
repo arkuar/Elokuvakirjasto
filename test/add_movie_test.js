@@ -45,10 +45,10 @@ describe('Add movie', function () {
      * toBeCalled-oletusta.
      */
     it('should be able to add a movie by its name, director, release date and description', function () {
-        scope.movieName = 'Testi1';
-        scope.movieYear = '2022';
-        scope.movieDirector = 'Testaaja';
-        scope.movieDescription = 'Testi';
+        scope.name = 'Testi1';
+        scope.year = '2022';
+        scope.director = 'Testaaja';
+        scope.description = 'Testi';
         scope.addMovie();
 
         expect(scope.movies.length).toBe(1);
