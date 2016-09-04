@@ -14,5 +14,9 @@
   },
   "dependencies": {
     "karma-chrome-launcher": "^0.1.8"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/arkuar/Elokuvakirjasto"
   }
 }
