@@ -1,0 +1,10 @@
+<h1>Elokuvat</h1>
+<p>Alla lista tietokannan elokuvista</p>
+<div>
+    <ul>
+        <li ng-repeat="movie in movies">
+            <a ng-href="#/movies/{{movie.$id}}">{{movie.name}}</a>
+            <button ng-click="removeMovie(movie)">Poista</button>
+        </li> 
+    </ul>
+</div>

@@ -1,0 +1,35 @@
+<h1>Uusi elokuva</h1>
+<div>
+    Lisää elokuva kirjastoon
+    <form name="movieForm">
+        <label>Nimi: </label>
+        <input name="movieName" type="text" ng-model="movieName" required>
+        <div ng-show="movieForm.movieName.$invalid && movieForm.movieName.$dirty">
+            Nimi ei ole validi!
+        </div>
+        <br>
+
+        <label>Ohjaaja: </label>
+        <input name="movieDirector" type="text" ng-model="movieDirector" required>
+        <div ng-show="movieForm.movieDirector.$invalid && movieForm.movieDirector.$dirty">
+            Ohjaajan nimi ei ole validi!
+        </div>
+        <br>
+
+        <label>Julkaisuvuosi: </label>
+        <input name="movieYear" type="text" ng-model="movieYear" required ng-pattern="/^\d+$/">
+        <div ng-show="movieForm.movieYear.$invalid && movieForm.movieYear.$dirty">
+            Vuosi ei ole validi!
+        </div>
+        <br>
+
+        <label>Kuvaus: </label>
+        <input name="movieDescription" type="text" ng-model="movieDescription" required>
+        <div ng-show="movieForm.movieDescription.$invalid && movieForm.movieDescription.$dirty">
+            Kuvaus ei ole validi!
+        </div>
+        <br>
+
+        <input type="button" ng-click="addMovie()" value="Lisää elokuva">
+    </form>
+</div>

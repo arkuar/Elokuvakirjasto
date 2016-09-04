@@ -1,0 +1,32 @@
+<h1>Muokkaa elokuvaa "{{movie.name}}"</h1>
+<form name="movieForm">
+        <b>Nimi: </b>
+        <input name="movieName" type="text" ng-model="name" required>
+        <div ng-show="movieForm.movieName.$invalid && movieForm.movieName.$dirty">
+            Nimi ei ole validi!
+        </div>
+        <br>
+
+        <b>Ohjaaja: </b>
+        <input name="movieDirector" type="text" ng-model="director" required value="{{movie.director}}">
+        <div ng-show="movieForm.movieDirector.$invalid && movieForm.movieDirector.$dirty">
+            Ohjaajan nimi ei ole validi!
+        </div>
+        <br>
+
+        <b>Julkaisuvuosi: </b>
+        <input name="movieYear" type="number" ng-model="year" required value="{{movie.year}}">
+        <div ng-show="movieForm.movieYear.$invalid && movieForm.movieYear.$dirty">
+            Vuosi ei ole validi!
+        </div>
+        <br>
+
+        <b>Kuvaus: </b>
+        <input name="movieDescription" type="text" ng-model="description" required value="{{movie.description}}">
+        <div ng-show="movieForm.movieDescription.$invalid && movieForm.movieDescription.$dirty">
+            Kuvaus ei ole validi!
+        </div>
+        <br>
+
+        <input type="button" ng-click="editMovie()" ng-disabled="movieForm.$invalid" value="Tallenna muutokset">
+    </form>
