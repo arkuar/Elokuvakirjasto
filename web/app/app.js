@@ -2,7 +2,7 @@
 var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
 
         .config(['$httpProvider', function ($httpProvider) {
-                delete $httpProvider.defaults.headers.common["X-Requested-With"];
+                delete $httpProvider.defaults.headers.common["X-Requested-With"]
             }])
 
         .config(function ($routeProvider) {
