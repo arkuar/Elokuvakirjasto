@@ -1,6 +1,10 @@
 // Toteuta moduulisi tänne
 var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
 
+        .config(['$httpProvider', function ($httpProvider) {
+                delete $httpProvider.defaults.headers.common["X-Requested-With"];
+            }])
+
         .config(function ($routeProvider) {
             $routeProvider
                     .when('/', {
@@ -33,11 +37,26 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
                     });
         })
 
-        .controller('ListController', ['$scope', 'FirebaseService', function ($scope, FirebaseService) {
+        .controller('ListController', ['$scope', 'FirebaseService', 'APIService', function ($scope, FirebaseService, APIService) {
                 $scope.movies = FirebaseService.getMovies();
+                $scope.searchResults = [];
+                $scope.search = false;
 
                 $scope.removeMovie = function (movie) {
                     FirebaseService.removeMovie(movie);
+                };
+
+                $scope.searchMovie = function () {
+
+                    $scope.search = true;
+
+                    APIService.findMovie($scope.searchName, $scope.searchYear).success(function (movies) {
+                        $scope.searchResults = movies.Search;
+                        console.log($scope.searchResults);
+                        if ($scope.searchResults == null) {
+                            $scope.searchResults = [];
+                        }
+                    });
                 };
             }])
 
@@ -74,7 +93,7 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
 
             FirebaseService.getMovie($routeParams.key, function (movie) {
                 $scope.movie = movie;
-                
+
                 //Lisää sisällön inputteihin 
                 $scope.name = movie.name;
                 $scope.year = movie.year;

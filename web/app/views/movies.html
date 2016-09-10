@@ -1,3 +1,24 @@
+<h1>Hae elokuvia</h1>
+<p>Nimi</p>
+<input type="text" ng-model="searchName">
+<p>Julkaisuvuosi</p>
+<input type="text" ng-model="searchYear">
+<button ng-click="searchMovie()">Hae</button>
+
+<div class="searchResults" ng-show="search">
+    <h1 ng-pluralize
+        count="searchResults.length"
+        when="{'0': 'Hakusanalla ei löytynyt elokuvia', '1': 'Hakusanalla löytyi {} elokuva', 'other': 'Hakusanalla löytyi {} elokuvaa'}">
+    </h1>
+
+
+    <ul>
+        <li ng-repeat="result in searchResults"><a href="http://www.imdb.com/title/{{result.imdbID}}">{{result.Title}}</a> {{result.Year}}</li>    
+    </ul>
+
+</div>
+
+
 <h1>Elokuvat</h1>
 <p>Alla lista tietokannan elokuvista</p>
 <div>
