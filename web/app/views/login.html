@@ -1,0 +1,15 @@
+<h1>Kirjaudu sisään</h1>
+<p>{{message}}</p>
+<form name="loginForm">
+    <label>Sähköposti</label>
+    <input name="email" type="email" ng-model="email" required>
+    <span ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
+        Sähköposti ei saa olla tyhjä!
+    </span>
+    <label>Salasana</label>
+    <input name="password" type="password" ng-model="password" required>
+    <span ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
+        Salasana ei saa olla tyhjä!
+    </span>
+    <button type="submit" ng-click="logIn()" ng-disabled="loginForm.$invalid">Kirjaudu sisään</button>
+</form>

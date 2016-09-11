@@ -6,12 +6,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Elokuvakirjasto</title>
     </head>
-    <nav>
-        <a ng-href="#/">Etusivu</a>
-        <a ng-href="#/movies">Elokuvat</a>
-        <a ng-href="#/movies/new">Lisää uusi</a>
-    </nav>
     <body ng-app="MovieApp">
+        <nav>
+            <div>
+                <a ng-href="#/">Etusivu</a>
+                <a ng-href="#/movies">Elokuvat</a>
+                <a ng-href="#/movies/new">Lisää uusi</a>
+            </div>
+            <div>
+                <ul>
+                    <li><button ng-click="logOut()" ng-if="userLoggedIn()">Kirjaudu ulos</button></li>
+                    <li><a ng-href="#/login" ng-if="!userLoggedIn()">Kirjaudu sisään</a></li>
+                    <li><a ng-href="#/register" ng-if="!userLoggedIn()">Rekisteröidy</a></li>
+                </ul>
+            </div>
+        </nav>
         <div ng-view></div>
 
         <!-- Hyödyllisiä kirjastoja -->
@@ -23,5 +32,15 @@
         <!-- Linkitä omat tiedostosi tähän (huomaa, että polun juuri on web-kansio!) -->
         <script src="app/app.js"></script>
         <script src="app/services/firebase_service.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+        <script>
+                        // Initialize Firebase
+                        // TODO: Replace with your project's customized code snippet
+                        var config = {
+                            authDomain: "elokuvakirjasto-446d1.firebaseapp.com",
+                            databaseURL: "https://elokuvakirjasto-446d1.firebaseio.com/movies",
+                        };
+                        firebase.initializeApp(config);
+        </script>
     </body>
 </html>

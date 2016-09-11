@@ -1,0 +1,15 @@
+<h1>Rekisteröi käyttäjä</h1>
+<p>{{message}}</p>
+<form name="registerForm">
+    <label>Sähköposti</label>
+    <input name="email" type="email" ng-model="newEmail" required>
+    <span ng-show="registerForm.email.$invalid && registerForm.email.$dirty">
+        Sähköposti ei saa olla tyhjä!
+    </span>
+    <label>Salasana</label>
+    <input name="password" type="password" ng-model="newPassword" required>
+    <span ng-show="registerForm.password.$invalid && registerForm.password.$dirty">
+        Salasana ei saa olla tyhjä!
+    </span>
+    <button type="submit" ng-click="register()" ng-disabled="registerForm.$invalid">Rekisteröidy</button>
+</form>

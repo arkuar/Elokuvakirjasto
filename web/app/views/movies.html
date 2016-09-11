@@ -25,7 +25,9 @@
     <ul>
         <li ng-repeat="movie in movies">
             <a ng-href="#/movies/{{movie.$id}}">{{movie.name}}</a>
-            <button ng-click="removeMovie(movie)">Poista</button>
+            <button ng-if="userLoggedIn()" ng-click="removeMovie(movie)">Poista</button>
         </li> 
     </ul>
 </div>
+
+<div></div>

@@ -7,37 +7,73 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
 
         .config(function ($routeProvider) {
             $routeProvider
-                    .when('/', {
-                        controller: 'ListController',
-                        templateUrl: 'app/views/movies.html'
-                    })
 
                     .when('/movies', {
                         controller: 'ListController',
-                        templateUrl: 'app/views/movies.html'
+                        templateUrl: 'app/views/movies.html',
+                        resolve: {
+                            currentAuth: function (AuthenticationService) {
+                                return AuthenticationService.checkLoggedIn();
+                            }
+                        }
+                    })
+
+                    .when('/login', {
+                        controller: 'UserController',
+                        templateUrl: 'app/views/login.html',
+                        resolve: {
+                            currentAuth: function (AuthenticationService) {
+                                return AuthenticationService.checkLoggedIn();
+                            }
+                        }
+                    })
+
+                    .when('/register', {
+                        controller: 'UserController',
+                        templateUrl: 'app/views/register.html',
+                        resolve: {
+                            currentAuth: function (AuthenticationService) {
+                                return AuthenticationService.checkLoggedIn();
+                            }
+                        }
                     })
 
                     .when('/movies/new', {
                         controller: 'AddController',
-                        templateUrl: 'app/views/new.html'
+                        templateUrl: 'app/views/new.html',
+                        resolve: {
+                            currentAuth: function (AuthenticationService) {
+                                return AuthenticationService.checkLoggedIn();
+                            }
+                        }
                     })
 
                     .when('/movies/:key', {
                         controller: 'ShowController',
-                        templateUrl: 'app/views/movie.html'
+                        templateUrl: 'app/views/movie.html',
+                        resolve: {
+                            currentAuth: function (AuthenticationService) {
+                                return AuthenticationService.checkLoggedIn();
+                            }
+                        }
                     })
 
                     .when('/movies/:key/edit', {
                         controller: 'editMovieController',
-                        templateUrl: 'app/views/edit.html'
+                        templateUrl: 'app/views/edit.html',
+                        resolve: {
+                            currentAuth: function (AuthenticationService) {
+                                return AuthenticationService.checkLoggedIn();
+                            }
+                        }
                     })
 
                     .otherwise({
-                        redirectTo: '/'
+                        redirectTo: '/movies'
                     });
         })
 
-        .controller('ListController', ['$scope', 'FirebaseService', 'APIService', function ($scope, FirebaseService, APIService) {
+        .controller('ListController', ['$scope', 'FirebaseService', 'APIService', '$location', function ($scope, FirebaseService, APIService, $location) {
                 $scope.movies = FirebaseService.getMovies();
                 $scope.searchResults = [];
                 $scope.search = false;
@@ -52,7 +88,6 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
 
                     APIService.findMovie($scope.searchName, $scope.searchYear).success(function (movies) {
                         $scope.searchResults = movies.Search;
-                        console.log($scope.searchResults);
                         if ($scope.searchResults == null) {
                             $scope.searchResults = [];
                         }
@@ -60,28 +95,33 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
                 };
             }])
 
-        .controller('AddController', ["$scope", "FirebaseService", "$routeParams", "$location", function ($scope, FirebaseService, $routeParams, $location) {
-                $scope.movies = FirebaseService.getMovies();
+        .controller('AddController', function ($scope, FirebaseService, $routeParams, $location, currentAuth) {
 
-                $scope.addMovie = function () {
-                    if ($scope.name == '' || $scope.year == null || $scope.director == '' || $scope.description == '') {
-                        alert('Täytä kaikki tiedot!');
-                    } else {
-                        FirebaseService.addMovie({
-                            name: $scope.name,
-                            year: $scope.year,
-                            director: $scope.director,
-                            description: $scope.description
-                        });
-                        $scope.name = '';
-                        $scope.year = '';
-                        $scope.director = '';
-                        $scope.description = '';
-                        $location.path('/')
-                    }
-                };
+            if (!currentAuth) {
+                $location.path('/login');
+            }
 
-            }])
+            $scope.movies = FirebaseService.getMovies();
+
+            $scope.addMovie = function () {
+                if ($scope.movieName == '' || $scope.movieYear == '' || $scope.movieDirector == '' || $scope.movieDescription == '') {
+                    alert('Täytä kaikki tiedot!');
+                } else {
+                    FirebaseService.addMovie({
+                        name: $scope.movieName,
+                        year: $scope.movieYear,
+                        director: $scope.movieDirector,
+                        description: $scope.movieDescription
+                    });
+                    $scope.movieName = '';
+                    $scope.movieYear = '';
+                    $scope.movieDirector = '';
+                    $scope.moviDescription = '';
+                    $location.path('/')
+                }
+            };
+
+        })
 
         .controller('ShowController', function ($scope, FirebaseService, $routeParams, $location) {
             FirebaseService.getMovie($routeParams.key, function (data) {
@@ -89,7 +129,11 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
             });
         })
 
-        .controller('editMovieController', function ($scope, FirebaseService, $routeParams, $location) {
+        .controller('editMovieController', function ($scope, FirebaseService, $routeParams, $location, currentAuth) {
+
+            if (!currentAuth) {
+                $location.path('/login');
+            }
 
             FirebaseService.getMovie($routeParams.key, function (movie) {
                 $scope.movie = movie;
@@ -111,5 +155,43 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
                     FirebaseService.editMovie($scope.movie);
                     $location.path('/');
                 }
+            };
+        })
+
+        .controller('UserController', function ($scope, $location, AuthenticationService) {
+            $scope.logIn = function () {
+                AuthenticationService.logUserIn($scope.email, $scope.password)
+                        .then(function () {
+                            $location.path('/movies');
+                        })
+                        .catch(function () {
+                            $scope.message = "Väärä sähköpostiosoite tai salasana!";
+                        });
+            };
+
+            $scope.register = function () {
+                AuthenticationService.createUser('user@email.com', 'password')
+                        .then(function () {
+                            AuthenticationService.logUserIn('user@email.com', 'password')
+                                    .then(function () {
+                                        $location.path('/movies');
+                                    });
+                        })
+
+                        .catch(function (error) {
+                            console.log(error)
+                            $scope.message = "Tapahtui virhe! Yritä uudestaan";
+                        });
+            };
+        })
+
+        .run(function (AuthenticationService, $rootScope) {
+            $rootScope.logOut = function () {
+                AuthenticationService.logUserOut();
+            };
+
+            $rootScope.userLoggedIn = function () {
+                $rootScope.user = AuthenticationService.getUserLoggedIn();
+                return $rootScope.user;
             };
         });
