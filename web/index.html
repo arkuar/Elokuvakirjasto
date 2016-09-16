@@ -15,14 +15,15 @@
             </div>
             <div>
                 <ul>
-                    <li><button ng-click="logOut()" ng-if="userLoggedIn()">Kirjaudu ulos</button></li>
-                    <li><a ng-href="#/login" ng-if="!userLoggedIn()">Kirjaudu sisään</a></li>
-                    <li><a ng-href="#/register" ng-if="!userLoggedIn()">Rekisteröidy</a></li>
+                    <li><button ng-click="logOut()" ng-show="userLoggedIn()">Kirjaudu ulos</button></li>
+                    <li><a ng-href="#/login" ng-show="!userLoggedIn()">Kirjaudu sisään</a></li>
+                    <li><a ng-href="#/register" ng-show="!userLoggedIn()">Rekisteröidy</a></li>
                 </ul>
             </div>
         </nav>
         <div ng-view></div>
-
+        <!--Firebase-->
+        <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
         <!-- Hyödyllisiä kirjastoja -->
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/angular-route/angular-route.min.js"></script>
@@ -32,15 +33,5 @@
         <!-- Linkitä omat tiedostosi tähän (huomaa, että polun juuri on web-kansio!) -->
         <script src="app/app.js"></script>
         <script src="app/services/firebase_service.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
-        <script>
-                        // Initialize Firebase
-                        // TODO: Replace with your project's customized code snippet
-                        var config = {
-                            authDomain: "elokuvakirjasto-446d1.firebaseapp.com",
-                            databaseURL: "https://elokuvakirjasto-446d1.firebaseio.com/movies",
-                        };
-                        firebase.initializeApp(config);
-        </script>
     </body>
 </html>

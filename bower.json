@@ -1,5 +1,5 @@
 {
-  "name": "Elokuvakirjasto",
+  "name": "elokuvakirjasto",
   "version": "0.0.0",
   "license": "MIT",
   "ignore": [
@@ -11,8 +11,12 @@
   ],
   "dependencies": {
     "angular": "~1.3.13",
-    "angularfire": "~1.1.3",
+    "angularfire": "^2.0.2",
     "angular-route": "~1.3.13",
     "angular-mocks": "~1.3.13"
+  },
+  "resolutions": {
+    "angularfire": "^2.0.2",
+    "firebase": "3.x.x"
   }
 }

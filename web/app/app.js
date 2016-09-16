@@ -170,9 +170,9 @@ var MovieApp = angular.module('MovieApp', ['firebase', 'ngRoute'])
             };
 
             $scope.register = function () {
-                AuthenticationService.createUser('user@email.com', 'password')
+                AuthenticationService.createUser($scope.newEmail, $scope.newPassword)
                         .then(function () {
-                            AuthenticationService.logUserIn('user@email.com', 'password')
+                            AuthenticationService.logUserIn($scope.newEmail, $scope.newPassword)
                                     .then(function () {
                                         $location.path('/movies');
                                     });
