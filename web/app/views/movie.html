@@ -1,4 +1,7 @@
-<h1>{{movie.name}}</h1><p>Julkaisuvuosi: ({{movie.year}})</p>
-<span>Ohjaaja: {{movie.director}}</span><br>
-<p>Kuvaus: {{movie.description}}</p>
-<p><a ng-href="#/movies/{{movie.$id}}/edit">Muokkaa</a></p>
+<h1><strong>{{movie.name}}</strong></h1>
+<ul>
+    <li><strong>Ohjaaja:</strong> {{movie.director}}</li>
+    <li><strong>Julkaisuvuosi:</strong> {{movie.year}}</li>
+</ul>
+<p>{{movie.description}}</p>
+<button class="btn btn-primary" type="button"><a ng-href="#/movies/{{movie.$id}}/edit" style="text-decoration: none; color: white">Muokkaa</a></button>

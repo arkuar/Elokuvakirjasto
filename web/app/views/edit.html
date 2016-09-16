@@ -1,32 +1,34 @@
-<h1>Muokkaa elokuvaa "{{movie.name}}"</h1>
+<h1><strong>Muokkaa elokuvaa "{{movie.name}}"</strong></h1>
 <form name="movieForm">
-        <b>Nimi: </b>
-        <input name="movieName" type="text" ng-model="name" required>
+    <div class="form-group" ng-class="{ 'has-error': movieForm.movieName.$invalid}">
+        <strong>Nimi</strong>
+        <input class="form-control" name="movieName" type="text" ng-model="name" required>
         <div ng-show="movieForm.movieName.$invalid && movieForm.movieName.$dirty">
             Nimi ei ole validi!
         </div>
-        <br>
-
-        <b>Ohjaaja: </b>
-        <input name="movieDirector" type="text" ng-model="director" required value="{{movie.director}}">
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': movieForm.movieDirector.$invalid}">
+        <strong>Ohjaaja</strong>
+        <input class="form-control" name="movieDirector" type="text" ng-model="director" required value="{{movie.director}}">
         <div ng-show="movieForm.movieDirector.$invalid && movieForm.movieDirector.$dirty">
             Ohjaajan nimi ei ole validi!
         </div>
-        <br>
-
-        <b>Julkaisuvuosi: </b>
-        <input name="movieYear" type="number" ng-model="year" required value="{{movie.year}}">
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': movieForm.movieYear.$invalid}">
+        <strong>Julkaisuvuosi</strong>
+        <input class="form-control" name="movieYear" type="number" ng-model="year" required value="{{movie.year}}">
         <div ng-show="movieForm.movieYear.$invalid && movieForm.movieYear.$dirty">
             Vuosi ei ole validi!
         </div>
-        <br>
-
-        <b>Kuvaus: </b>
-        <input name="movieDescription" type="text" ng-model="description" required value="{{movie.description}}">
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': movieForm.movieDescription.$invalid}">
+        <strong>Kuvaus</strong>
+        <textarea class="form-control" name="movieDescription" type="text" ng-model="description" required value="{{movie.description}}">
+        </textarea>
         <div ng-show="movieForm.movieDescription.$invalid && movieForm.movieDescription.$dirty">
             Kuvaus ei ole validi!
         </div>
-        <br>
+    </div>
 
-        <input type="button" ng-click="editMovie()" ng-disabled="movieForm.$invalid" value="Tallenna muutokset">
-    </form>
+    <button type="submit" ng-click="editMovie()" ng-disabled="movieForm.$invalid">Tallenna</button>
+</form>

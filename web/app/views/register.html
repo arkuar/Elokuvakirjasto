@@ -1,15 +1,24 @@
-<h1>Rekisteröi käyttäjä</h1>
+<h1><strong>Rekisteröidy</strong></h1>
 <p>{{message}}</p>
-<form name="registerForm">
-    <label>Sähköposti</label>
-    <input name="email" type="email" ng-model="newEmail" required>
-    <span ng-show="registerForm.email.$invalid && registerForm.email.$dirty">
-        Sähköposti ei saa olla tyhjä!
-    </span>
-    <label>Salasana</label>
-    <input name="password" type="password" ng-model="newPassword" required>
-    <span ng-show="registerForm.password.$invalid && registerForm.password.$dirty">
-        Salasana ei saa olla tyhjä!
-    </span>
-    <button type="submit" ng-click="register()" ng-disabled="registerForm.$invalid">Rekisteröidy</button>
+<form name="registerForm" class="form-group">
+    <div class="row">
+        <div class="col-md-6">
+            <label><strong>Sähköpostiosoite</strong></label>
+            <input class="form-control" name="email" type="email" ng-model="newEmail" required>
+            <span ng-show="registerForm.email.$invalid && registerForm.email.$dirty">
+                Sähköposti ei ole validi!
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <label><strong>Salasana</strong></label>
+            <input class="form-control" name="password" type="password" ng-model="newPassword" required>
+            <span ng-show="registerForm.password.$invalid && registerForm.password.$dirty">
+                Salasana ei saa olla tyhjä!
+            </span>
+        </div>
+    </div>
 </form>
+<button class="btn btn-primary" type="submit" ng-click="register()" ng-disabled="registerForm.$invalid">Rekisteröidy</button>
